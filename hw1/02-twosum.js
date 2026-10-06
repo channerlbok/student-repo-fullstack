@@ -22,3 +22,22 @@ Input: nums = [3,3], target = 6
 Output: [0,1]
 
 **/
+
+
+
+function twoSum(nums, target) {
+  const seen = new Map();
+
+  for (let i = 0; i < nums.length; i++) {
+    const needed = target - nums[i];
+
+    if (seen.has(needed)) {
+      return [seen.get(needed), i];
+    }
+
+    seen.set(nums[i], i);
+  }
+}
+ const nums = [2, 7, 11, 15];
+ const target = 9;
+console.log(twoSum(nums, target));
