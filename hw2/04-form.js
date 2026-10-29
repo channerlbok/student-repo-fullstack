@@ -16,6 +16,16 @@ app.post('/submit', (req, res) => {
   const comments = req.body.comments;
   const newsletter = req.body.newsletter;
 
+  if (typeof username !== 'string' || username.trim() === '') {
+    res.status(400).json({ error: 'Username is required.' });
+    return;
+  }
+
+  if (typeof email !== 'string' || email.trim() === '') {
+    res.status(400).json({ error: 'Email is required.' });
+    return;
+  }
+
   res.json({
     username,
     email,
