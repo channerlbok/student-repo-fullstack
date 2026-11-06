@@ -1,0 +1,13 @@
+{
+  "name": "hw3",
+  "version": "1.0.0",
+  "private": true,
+  "workspaces": [
+    "express"
+  ],
+  "scripts": {
+    "start": "npm start --workspace express",
+    "dev": "npm run devstart --workspace express",
+    "seed": "npm run seed --workspace express"
+  }
+}
