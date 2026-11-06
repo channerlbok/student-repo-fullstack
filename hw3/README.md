@@ -1,6 +1,6 @@
 # Homework 3
 
-[MDN Express tutorial](https://developer.mozilla.org/en-US/docs/Learn_web_development/Extensions/Server-side/Express_Nodejs/skeleton_website), Parts 2-6.
+[MDN Express tutorial](https://developer.mozilla.org/en-US/docs/Learn_web_development/Extensions/Server-side/Express_Nodejs/skeleton_website), Parts 2-6, and the Countries exercise.
 
 ## Install
 
@@ -22,3 +22,13 @@ npm run dev
 Run the seed command once. Open http://localhost:3000/catalog.
 
 Tutorial fixes: dates no longer shift by a day, and blank selections or deleted copies no longer cause form errors.
+
+## Countries
+
+Create `countries/.env` from `.env.example` and add `REST_COUNTRIES_API_KEY`.
+
+```bash
+npm run countries
+```
+
+Open http://localhost:3001/home. Currency information replaces leaders, as instructed in the class announcement.
