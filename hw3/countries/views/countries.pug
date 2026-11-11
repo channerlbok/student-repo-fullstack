@@ -1,0 +1,23 @@
+extends layout
+
+block content
+  p #{countries.length} countries
+  section.grid
+    each country in countries
+      article
+        h2= (country.names && country.names.common) || 'Unnamed country'
+        h3 Capitals
+        ul
+          each capital in country.capitals || []
+            li= (capital && capital.name) || 'Not provided'
+          else
+            li Not provided
+        h3 Currencies
+        ul
+          each currency in country.currencies || []
+            li
+              | #{(currency && currency.name) || 'Name unavailable'} (#{(currency && currency.symbol) || 'Symbol unavailable'})
+          else
+            li Not provided
+    else
+      p No countries returned.

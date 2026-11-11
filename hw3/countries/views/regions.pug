@@ -1,0 +1,14 @@
+extends layout
+
+block content
+  p #{total} countries across #{regions.length} regions, including any unknown region.
+  section.grid
+    each region in regions
+      article
+        h2= region.name
+        p #{region.countries.length} countries
+        ul
+          each countryName in region.countries
+            li= countryName
+    else
+      p No country data returned.

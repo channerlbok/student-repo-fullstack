@@ -1,0 +1,16 @@
+extends layout
+
+block content
+  p #{countries.length} countries
+  p Ordered by population, highest first.
+  section.grid
+    each country in countries
+      article
+        h2= (country.names && country.names.common) || 'Unnamed country'
+        if country.flag && (country.flag.url_png || country.flag.url_svg)
+          img.flag(src=country.flag.url_png || country.flag.url_svg alt=((country.names && country.names.common) || 'Country') + ' flag' loading='lazy' width='160' height='100')
+        else
+          p Flag unavailable
+        p.population= country.population.toLocaleString('en-US') + ' people'
+    else
+      p No countries have a reported population of at least 50 million.
