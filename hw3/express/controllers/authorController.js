@@ -4,7 +4,7 @@ const Book = require('../models/book');
 const { body, validationResult } = require('express-validator');
 
 // Display list of all Authors.
-exports.author_list = async (req, res, next) => {
+exports.author_list = async (req, res) => {
   const allAuthors = await Author.find().sort({ family_name: 1 }).exec();
   res.render('author_list', {
     title: 'Author List',
@@ -37,7 +37,7 @@ exports.author_detail = async (req, res, next) => {
 };
 
 // Display Author create form on GET.
-exports.author_create_get = (req, res, next) => {
+exports.author_create_get = (req, res) => {
   res.render('author_form', { title: 'Create Author' });
 };
 
@@ -63,7 +63,7 @@ exports.author_create_post = [
   body('date_of_death', 'Invalid date of death').optional({ values: 'falsy' }).isISO8601().toDate(),
 
   // Process request after validation and sanitization.
-  async (req, res, next) => {
+  async (req, res) => {
 
     // Extract the validation errors from a request.
     const errors = validationResult(req);
@@ -95,7 +95,7 @@ exports.author_create_post = [
 ];
 
 // Display Author delete form on GET.
-exports.author_delete_get = async (req, res, next) => {
+exports.author_delete_get = async (req, res) => {
 
   // Get details of author and all their books (in parallel)
   const [author, allBooksByAuthor] = await Promise.all([
@@ -118,7 +118,7 @@ exports.author_delete_get = async (req, res, next) => {
 };
 
 // Handle Author delete on POST.
-exports.author_delete_post = async (req, res, next) => {
+exports.author_delete_post = async (req, res) => {
 
   // Get details of author and all their books (in parallel)
   const [author, allBooksByAuthor] = await Promise.all([
@@ -178,7 +178,7 @@ exports.author_update_post = [
   body('date_of_death', 'Invalid date of death').optional({ values: 'falsy' }).isISO8601().toDate(),
 
   // Process request after validation and sanitization.
-  async (req, res, next) => {
+  async (req, res) => {
 
     // Extract the validation errors from a request.
     const errors = validationResult(req);

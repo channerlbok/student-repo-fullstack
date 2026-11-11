@@ -21,87 +21,77 @@ const mongoose = require('mongoose');
 
 const mongoDB = userArgs[0] || process.env.MONGODB_URI || 'mongodb://127.0.0.1:27017/local_library';
 
-main().catch(async (err) => {
-  console.error(err.message);
-  await mongoose.connection.close();
-  process.exitCode = 1;
-});
-
-async function main() {
-  console.log('Debug: About to connect');
-  await mongoose.connect(mongoDB);
-  console.log('Debug: Should be connected?');
-  await createGenres();
-  await createAuthors();
-  await createBooks();
-  await createBookInstances();
-  console.log('Debug: Closing mongoose');
-  await mongoose.connection.close();
-}
-
-
-
 // We pass the index to the ...Create functions so that, for example,
 // genre[0] will always be the Fantasy genre, regardless of the order
 // in which the elements of promise.all's argument complete.
-async function genreCreate(index, name) {
+const genreCreate = async function genreCreate(index, name) {
   const genre = new Genre({ name });
   await genre.save();
   genres[index] = genre;
   console.log(`Added genre: ${name}`);
-}
+};
 
-async function authorCreate(index, firstName, familyName, birthDate, deathDate) {
+const authorCreate = async function authorCreate(index, firstName, familyName, birthDate, deathDate) {
   const authorDetail = { first_name: firstName, family_name: familyName };
-  if (birthDate !== false) authorDetail.date_of_birth = birthDate;
-  if (deathDate !== false) authorDetail.date_of_death = deathDate;
+  if (birthDate !== false) {
+    authorDetail.date_of_birth = birthDate;
+  }
+  if (deathDate !== false) {
+    authorDetail.date_of_death = deathDate;
+  }
 
   const author = new Author(authorDetail);
 
   await author.save();
   authors[index] = author;
   console.log(`Added author: ${firstName} ${familyName}`);
-}
+};
 
-async function bookCreate(index, title, summary, isbn, author, genre) {
+const bookCreate = async function bookCreate(index, title, summary, isbn, author, genre) {
   const bookDetail = {
     title,
     summary,
     author,
     isbn,
   };
-  if (genre !== false) bookDetail.genre = genre;
+  if (genre !== false) {
+    bookDetail.genre = genre;
+  }
 
   const book = new Book(bookDetail);
   await book.save();
   books[index] = book;
   console.log(`Added book: ${title}`);
-}
+};
 
-async function bookInstanceCreate(index, book, imprint, dueBack, status) {
+const bookInstanceCreate = async function bookInstanceCreate(index, book, imprint, dueBack, status) {
   const bookInstanceDetail = {
     book,
     imprint,
   };
-  if (dueBack !== false) bookInstanceDetail.due_back = dueBack;
-  if (status !== false) bookInstanceDetail.status = status;
+  if (dueBack !== false) {
+    bookInstanceDetail.due_back = dueBack;
+  }
+  if (status !== false) {
+    bookInstanceDetail.status = status;
+  }
 
   const bookInstance = new BookInstance(bookInstanceDetail);
   await bookInstance.save();
   bookInstances[index] = bookInstance;
   console.log(`Added bookinstance: ${imprint}`);
-}
+};
 
-async function createGenres() {
+const createGenres = async function createGenres() {
   console.log('Adding genres');
   await Promise.all([
     genreCreate(0, 'Fantasy'),
     genreCreate(1, 'Science Fiction'),
     genreCreate(2, 'French Poetry'),
   ]);
-}
+};
 
-async function createAuthors() {
+const createAuthors = async function createAuthors() {
   console.log('Adding authors');
   await Promise.all([
     authorCreate(0, 'Patrick', 'Rothfuss', '1973-06-06', false),
@@ -110,9 +100,9 @@ async function createAuthors() {
     authorCreate(3, 'Bob', 'Billings', false, false),
     authorCreate(4, 'Jim', 'Jones', '1971-12-16', false),
   ]);
-}
+};
 
-async function createBooks() {
+const createBooks = async function createBooks() {
   console.log('Adding Books');
   await Promise.all([
     bookCreate(
@@ -161,9 +151,9 @@ async function createBooks() {
     ]),
     bookCreate(6, 'Test Book 2', 'Summary of test book 2', 'ISBN222222', authors[4], false),
   ]);
-}
+};
 
-async function createBookInstances() {
+const createBookInstances = async function createBookInstances() {
   console.log('Adding authors');
   await Promise.all([
     bookInstanceCreate(0, books[0], 'London Gollancz, 2014.', false, 'Available'),
@@ -196,4 +186,22 @@ async function createBookInstances() {
     bookInstanceCreate(9, books[0], 'Imprint XXX2', false, false),
     bookInstanceCreate(10, books[1], 'Imprint XXX3', false, false),
   ]);
-}
+};
+
+const main = async function main() {
+  console.log('Debug: About to connect');
+  await mongoose.connect(mongoDB);
+  console.log('Debug: Should be connected?');
+  await createGenres();
+  await createAuthors();
+  await createBooks();
+  await createBookInstances();
+  console.log('Debug: Closing mongoose');
+  await mongoose.connection.close();
+};
+
+main().catch(async (err) => {
+  console.error(err.message);
+  await mongoose.connection.close();
+  process.exitCode = 1;
+});

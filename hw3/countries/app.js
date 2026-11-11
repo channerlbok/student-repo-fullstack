@@ -2,6 +2,8 @@ const express = require('express');
 const path = require('node:path');
 const getCountries = require('./services/countries');
 
+const MIN_POPULATION = 50_000_000;
+
 const app = express();
 app.set('view engine', 'pug');
 app.set('views', path.join(__dirname, 'views'));
@@ -23,7 +25,7 @@ app.get('/countries', async (req, res) => {
 app.get('/populous', async (req, res) => {
   const countries = await getCountries();
   const populousCountries = countries.filter(
-    (country) => typeof country.population === 'number' && country.population >= 50000000,
+    (country) => typeof country.population === 'number' && country.population >= MIN_POPULATION,
   );
   populousCountries.sort((a, b) => b.population - a.population);
 

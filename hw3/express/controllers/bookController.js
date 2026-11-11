@@ -5,7 +5,7 @@ const BookInstance = require('../models/bookinstance');
 
 const { body, validationResult } = require('express-validator');
 
-exports.index = async (req, res, next) => {
+exports.index = async (req, res) => {
 
   // Get details of books, book instances, authors and genre counts (in parallel)
   const [numBooks, numBookInstances, numAvailableBookInstances, numAuthors, numGenres] =
@@ -28,7 +28,7 @@ exports.index = async (req, res, next) => {
 };
 
 // Display list of all books.
-exports.book_list = async (req, res, next) => {
+exports.book_list = async (req, res) => {
   const allBooks = await Book.find({}, 'title author').sort({ title: 1 }).populate('author').exec();
 
   res.render('book_list', { title: 'Book List', book_list: allBooks });
@@ -59,7 +59,7 @@ exports.book_detail = async (req, res, next) => {
 };
 
 // Display book create form on GET.
-exports.book_create_get = async (req, res, next) => {
+exports.book_create_get = async (req, res) => {
 
   // Get all authors and genres, which we can use for adding to our book.
   const [allAuthors, allGenres] = await Promise.all([
@@ -93,7 +93,7 @@ exports.book_create_post = [
   body('genre.*').escape(),
 
   // Process request after validation and sanitization.
-  async (req, res, next) => {
+  async (req, res) => {
 
     // Extract the validation errors from a request.
     const errors = validationResult(req);
@@ -139,7 +139,7 @@ exports.book_create_post = [
 ];
 
 // Display book delete form on GET.
-exports.book_delete_get = async (req, res, next) => {
+exports.book_delete_get = async (req, res) => {
   const [book, bookInstances] = await Promise.all([
     Book.findById(req.params.id).populate('author').populate('genre').exec(),
     BookInstance.find({ book: req.params.id }).exec(),
@@ -159,7 +159,7 @@ exports.book_delete_get = async (req, res, next) => {
 };
 
 // Handle book delete on POST.
-exports.book_delete_post = async (req, res, next) => {
+exports.book_delete_post = async (req, res) => {
 
   // Assume the post has valid id (ie no validation/sanitization).
   const [book, bookInstances] = await Promise.all([
@@ -209,7 +209,9 @@ exports.book_update_get = async (req, res, next) => {
 
   // Mark our selected genres as checked.
   allGenres.forEach((genre) => {
-    if (book.genre.includes(genre._id)) genre.checked = 'true';
+    if (book.genre.includes(genre._id)) {
+      genre.checked = 'true';
+    }
   });
 
   res.render('book_form', {
@@ -239,7 +241,7 @@ exports.book_update_post = [
   body('genre.*').escape(),
 
   // Process request after validation and sanitization.
-  async (req, res, next) => {
+  async (req, res) => {
 
     // Extract the validation errors from a request.
     const errors = validationResult(req);

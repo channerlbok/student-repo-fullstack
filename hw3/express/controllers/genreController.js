@@ -4,7 +4,7 @@ const Book = require('../models/book');
 const { body, validationResult } = require('express-validator');
 
 // Display list of all Genre.
-exports.genre_list = async (req, res, next) => {
+exports.genre_list = async (req, res) => {
   const allGenres = await Genre.find().sort({ name: 1 }).exec();
   res.render('genre_list', {
     title: 'Genre List',
@@ -36,7 +36,7 @@ exports.genre_detail = async (req, res, next) => {
 };
 
 // Display Genre create form on GET.
-exports.genre_create_get = (req, res, next) => {
+exports.genre_create_get = (req, res) => {
   res.render('genre_form', { title: 'Create Genre' });
 };
 
@@ -50,7 +50,7 @@ exports.genre_create_post = [
     .escape(),
 
   // Process request after validation and sanitization.
-  async (req, res, next) => {
+  async (req, res) => {
 
     // Extract the validation errors from a request.
     const errors = validationResult(req);
@@ -89,7 +89,7 @@ exports.genre_create_post = [
 ];
 
 // Display Genre delete form on GET.
-exports.genre_delete_get = async (req, res, next) => {
+exports.genre_delete_get = async (req, res) => {
 
   // Get details of genre and all associated books (in parallel)
   const [genre, booksInGenre] = await Promise.all([
@@ -110,7 +110,7 @@ exports.genre_delete_get = async (req, res, next) => {
 };
 
 // Handle Genre delete on POST.
-exports.genre_delete_post = async (req, res, next) => {
+exports.genre_delete_post = async (req, res) => {
 
   // Get details of genre and all associated books (in parallel)
   const [genre, booksInGenre] = await Promise.all([
@@ -159,7 +159,7 @@ exports.genre_update_post = [
     .escape(),
 
   // Process request after validation and sanitization.
-  async (req, res, next) => {
+  async (req, res) => {
 
     // Extract the validation errors from a request .
     const errors = validationResult(req);

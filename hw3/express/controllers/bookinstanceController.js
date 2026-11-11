@@ -4,7 +4,7 @@ const Book = require('../models/book');
 const { body, validationResult } = require('express-validator');
 
 // Display list of all BookInstances.
-exports.bookinstance_list = async (req, res, next) => {
+exports.bookinstance_list = async (req, res) => {
   const allBookInstances = await BookInstance.find().populate('book').exec();
 
   res.render('bookinstance_list', {
@@ -32,7 +32,7 @@ exports.bookinstance_detail = async (req, res, next) => {
 };
 
 // Display BookInstance create form on GET.
-exports.bookinstance_create_get = async (req, res, next) => {
+exports.bookinstance_create_get = async (req, res) => {
   const allBooks = await Book.find({}, 'title').sort({ title: 1 }).exec();
 
   res.render('bookinstance_form', {
@@ -51,7 +51,7 @@ exports.bookinstance_create_post = [
   body('due_back', 'Invalid date').optional({ values: 'falsy' }).isISO8601().toDate(),
 
   // Process request after validation and sanitization.
-  async (req, res, next) => {
+  async (req, res) => {
 
     // Extract the validation errors from a request.
     const errors = validationResult(req);
@@ -87,7 +87,7 @@ exports.bookinstance_create_post = [
 ];
 
 // Display BookInstance delete form on GET.
-exports.bookinstance_delete_get = async (req, res, next) => {
+exports.bookinstance_delete_get = async (req, res) => {
   const bookInstance = await BookInstance.findById(req.params.id).populate('book').exec();
 
   if (bookInstance === null) {
@@ -103,7 +103,7 @@ exports.bookinstance_delete_get = async (req, res, next) => {
 };
 
 // Handle BookInstance delete on POST.
-exports.bookinstance_delete_post = async (req, res, next) => {
+exports.bookinstance_delete_post = async (req, res) => {
 
   // Assume valid BookInstance id in field.
   await BookInstance.findByIdAndDelete(req.body.id);
@@ -145,7 +145,7 @@ exports.bookinstance_update_post = [
   body('due_back', 'Invalid date').optional({ values: 'falsy' }).isISO8601().toDate(),
 
   // Process request after validation and sanitization.
-  async (req, res, next) => {
+  async (req, res) => {
 
     // Extract the validation errors from a request.
     const errors = validationResult(req);

@@ -1,4 +1,4 @@
-async function getCountries() {
+const getCountries = async function getCountries() {
   const apiKey = process.env.REST_COUNTRIES_API_KEY;
   if (!apiKey) {
     throw new Error('Add REST_COUNTRIES_API_KEY to countries/.env.');
@@ -48,6 +48,6 @@ async function getCountries() {
   });
 
   return countries;
-}
+};
 
 module.exports = getCountries;

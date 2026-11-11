@@ -25,7 +25,7 @@ Tutorial fixes: dates no longer shift by a day, and blank selections or deleted 
 
 ## Countries
 
-Create `countries/.env` from `.env.example` and add `REST_COUNTRIES_API_KEY`.
+Create an account at [REST Countries](https://restcountries.com/) to get an API key. Copy `countries/.env.example` to `countries/.env`, then enter your key as `REST_COUNTRIES_API_KEY`.
 
 ```bash
 npm run countries
